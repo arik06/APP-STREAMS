@@ -72,6 +72,13 @@ export default function WelcomePage() {
     resetInactivityTimer();
   }, [resetInactivityTimer]);
 
+  // Función para cerrar sesión
+  const handleLogout = useCallback(() => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    router.push('/');
+  }, [router]);
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     const storedUsername = localStorage.getItem('username');
@@ -110,7 +117,7 @@ export default function WelcomePage() {
   const fetchServices = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:3001/api/services', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/api/services`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -139,7 +146,7 @@ export default function WelcomePage() {
   const handleServiceClick = async (serviceId: number) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:3001/api/services/${serviceId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/api/services/${serviceId}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -159,11 +166,7 @@ export default function WelcomePage() {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('username');
-    router.push('/');
-  };
+
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('es-ES', {

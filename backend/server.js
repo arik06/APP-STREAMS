@@ -200,6 +200,11 @@ app.get('/api/services/:id', authenticateToken, (req, res) => {
   });
 });
 
+// Health check para Railway
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'OK', timestamp: new Date().toISOString() });
+});
+
 
 
 app.listen(PORT, () => {
