@@ -1,10 +1,8 @@
 {
   "$schema": "https://railway.app/railway.schema.json",
-  "source": {
-    "rootDirectory": "backend"
-  },
   "build": {
-    "builder": "NIXPACKS"
+    "builder": "NIXPACKS",
+    "root": "backend"
   },
   "deploy": {
     "startCommand": "npm start",
@@ -14,4 +12,3 @@
     "restartPolicyMaxRetries": 10
   }
 }
-
