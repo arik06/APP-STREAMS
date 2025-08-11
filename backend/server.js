@@ -14,11 +14,13 @@ app.use(cors());
 app.use(express.json());
 
 // Crear conexión a la base de datos
-const db = new sqlite3.Database('./database.sqlite', (err) => {
+// Permite configurar la ruta mediante la variable de entorno DATABASE_PATH (útil para Railway Volumes)
+const databasePath = process.env.DATABASE_PATH || './database.sqlite';
+const db = new sqlite3.Database(databasePath, (err) => {
   if (err) {
     console.error('Error conectando a la base de datos:', err);
   } else {
-    console.log('Conectado a la base de datos SQLite');
+    console.log(`Conectado a la base de datos SQLite en: ${databasePath}`);
     initDatabase();
   }
 });
