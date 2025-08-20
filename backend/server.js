@@ -62,44 +62,44 @@ function initDatabase() {
     const services = [
       {
         name: 'Prime Video',
-        email: process.env.PRIME_EMAIL || 'tu-email-prime@gmail.com',
-        password: process.env.PRIME_PASSWORD || 'tu-contraseña-prime',
-        end_date: process.env.PRIME_END_DATE || '2024-12-31',
+        email: 'pedrodiaz3424@gmail.com',
+        password: 'ivises72',
+        end_date: '10-08-2026',
         image_url: '/img/prime.png'
       },
       {
         name: 'Disney+',
-        email: process.env.DISNEY_EMAIL || 'tu-email-disney@gmail.com',
-        password: process.env.DISNEY_PASSWORD || 'tu-contraseña-disney',
-        end_date: process.env.DISNEY_END_DATE || '2024-12-31',
+        email: 'sin activar aun',
+        password: 'sin activar aun',
+        end_date: 'sin fecha',
         image_url: '/img/disney.png'
       },
       {
         name: 'HBO Max',
-        email: process.env.HBO_EMAIL || 'tu-email-hbo@gmail.com',
-        password: process.env.HBO_PASSWORD || 'tu-contraseña-hbo',
-        end_date: process.env.HBO_END_DATE || '2024-12-31',
+        email: 'pedrodiaz3424@gmail.com',
+        password: 'Sitkaes3105',
+        end_date: '10-08-2026',
         image_url: '/img/hbo.png'
       },
       {
         name: 'Paramount+',
-        email: process.env.PARAMOUNT_EMAIL || 'tu-email-paramount@gmail.com',
-        password: process.env.PARAMOUNT_PASSWORD || 'tu-contraseña-paramount',
-        end_date: process.env.PARAMOUNT_END_DATE || '2024-12-31',
+        email: 'pedrodiaz3424@gmail.com',
+        password: 'ivises72',
+        end_date: '10-08-2026',
         image_url: '/img/paramount.png'
       },
       {
         name: 'Crunchyroll',
-        email: process.env.CRUNCHYROLL_EMAIL || 'tu-email-crunchyroll@gmail.com',
-        password: process.env.CRUNCHYROLL_PASSWORD || 'tu-contraseña-crunchyroll',
-        end_date: process.env.CRUNCHYROLL_END_DATE || '2024-12-31',
+        email: 'pedrodiaz3424@gmail.com',
+        password: 'ivises72',
+        end_date: '10-08-2026',
         image_url: '/img/crunchyroll.png'
       },
       {
         name: 'Netflix',
-        email: process.env.NETFLIX_EMAIL || 'tu-email-netflix@gmail.com',
-        password: process.env.NETFLIX_PASSWORD || 'tu-contraseña-netflix',
-        end_date: process.env.NETFLIX_END_DATE || '2024-12-31',
+        email: 'pedrodiaz3424@gmail.com',
+        password: 'Sitkaes3105',
+        end_date: '11-08-2026',
         image_url: '/img/netflix.png'
       }
     ];
