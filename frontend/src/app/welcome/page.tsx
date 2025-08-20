@@ -186,11 +186,34 @@ export default function WelcomePage() {
 
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('es-ES', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
+    // Si la fecha es inválida o está vacía, mostrar mensaje apropiado
+    if (!dateString || dateString === 'sin fecha' || dateString === 'Invalid Date') {
+      return 'Fecha no disponible';
+    }
+    
+    // Caso especial para servicios no pagados
+    if (dateString === 'no pagado' || dateString === 'sin activar') {
+      return 'No pagado';
+    }
+    
+    try {
+      // Intentar parsear la fecha en formato DD-MM-YYYY
+      const [day, month, year] = dateString.split('-');
+      const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+      
+      // Verificar si la fecha es válida
+      if (isNaN(date.getTime())) {
+        return 'Fecha no disponible';
+      }
+      
+      return date.toLocaleDateString('es-ES', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      });
+    } catch (error) {
+      return 'Fecha no disponible';
+    }
   };
 
   if (isLoading) {
