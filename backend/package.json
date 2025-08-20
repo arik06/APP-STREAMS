@@ -9,7 +9,8 @@
         "create-user": "node create-user.js",
         "check-db": "node check-database.js",
         "update-credentials": "node update-credentials.js",
-        "setup-env": "node setup-env.js"
+        "setup-env": "node setup-env.js",
+        "edit-user": "node edit-user.js"
     },
     "dependencies": {
         "bcryptjs": "^2.4.3",
