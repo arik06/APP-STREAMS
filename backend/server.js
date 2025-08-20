@@ -14,7 +14,8 @@ app.use(cors({
   origin: [
     'http://localhost:3000',
     'https://*.vercel.app',
-    'https://app-streams-production.up.railway.app'
+    'https://app-streams-production.up.railway.app',
+    'https://app-streams-7jk77xow7-pepes-projects-38c6e320.vercel.app'
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
