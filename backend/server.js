@@ -81,7 +81,7 @@ function initDatabase() {
         name: 'Disney+',
         email: 'sin activar aun',
         password: 'sin activar aun',
-        end_date: 'sin fecha',
+        end_date: 'no pagado',
         image_url: '/img/disney.png'
       },
       {
