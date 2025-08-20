@@ -1,0 +1,5 @@
+[33mcbfbc29[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m)[m D
+[33mfc62e35[m chore: add root-level railway.json to set rootDirectory=backend for Railway deploy
+[33m523babe[m feat(backend): allow configuring SQLite path via DATABASE_PATH env (Railway support)
+[33m58d5dc4[m Fix: Corregir errores de TypeScript y ESLint para build exitoso
+[33m6ba610c[m Proyecto completo desde cero: frontend y backend con servicios de streaming
