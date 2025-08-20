@@ -28,6 +28,8 @@ export default function WelcomePage() {
   const [username, setUsername] = useState('');
   const [timeLeft, setTimeLeft] = useState(120); // 2 minutos en segundos
   const [showTimer, setShowTimer] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [copiedField, setCopiedField] = useState<string | null>(null);
   const router = useRouter();
   
   // Referencias para el timer
@@ -161,11 +163,26 @@ export default function WelcomePage() {
       data.image_url = data.image_url.replace('/images/', '/img/');
       setSelectedService(data);
       setShowModal(true);
+      setShowPassword(false); // Resetear estado de contraseña
+      setCopiedField(null); // Resetear estado de copiado
     } catch (error) {
       console.error('Error:', error);
     }
   };
 
+  const copyToClipboard = async (text: string, field: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      showCopyNotification(field);
+    } catch (err) {
+      console.error('Error al copiar:', err);
+    }
+  };
+
+  const showCopyNotification = (field: string) => {
+    setCopiedField(field);
+    setTimeout(() => setCopiedField(null), 1500); // Notificación más rápida
+  };
 
 
   const formatDate = (dateString: string) => {
@@ -288,8 +305,15 @@ export default function WelcomePage() {
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Correo Electrónico
                 </label>
-                <div className="bg-gray-50 p-3 rounded-md">
+                <div className="bg-gray-50 p-3 rounded-md flex items-center justify-between">
                   <p className="text-gray-900">{selectedService.email}</p>
+                  <button
+                    onClick={() => copyToClipboard(selectedService.email, 'email')}
+                    className="ml-2 p-2 text-gray-500 hover:text-gray-700 transition-colors"
+                    title="Copiar correo"
+                  >
+                    {copiedField === 'email' ? '✅' : '📋'}
+                  </button>
                 </div>
               </div>
 
@@ -297,8 +321,28 @@ export default function WelcomePage() {
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Contraseña
                 </label>
-                <div className="bg-gray-50 p-3 rounded-md">
-                  <p className="text-gray-900">{selectedService.password}</p>
+                <div className="bg-gray-50 p-3 rounded-md flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <p className="text-gray-900">
+                      {showPassword ? selectedService.password : '•'.repeat(8)}
+                    </p>
+                    <button
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="p-1 text-gray-500 hover:text-gray-700 transition-colors"
+                      title={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                    >
+                      {showPassword ? '🙈' : '👁️'}
+                    </button>
+                  </div>
+                  {showPassword && (
+                    <button
+                      onClick={() => copyToClipboard(selectedService.password, 'password')}
+                      className="ml-2 p-2 text-gray-500 hover:text-gray-700 transition-colors"
+                      title="Copiar contraseña"
+                    >
+                      {copiedField === 'password' ? '✅' : '📋'}
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
@@ -311,6 +355,18 @@ export default function WelcomePage() {
                 Cerrar
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Notificación sutil de copiado */}
+      {copiedField && (
+        <div className="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-auto bg-green-500 text-white px-4 py-3 md:px-4 md:py-2 rounded-lg shadow-lg z-50 animate-fade-in">
+          <div className="flex items-center justify-center md:justify-start space-x-2">
+            <span>✅</span>
+            <span className="text-sm font-medium text-center md:text-left">
+              {copiedField === 'email' ? 'Correo copiado' : 'Contraseña copiada'}
+            </span>
           </div>
         </div>
       )}

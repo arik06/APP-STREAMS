@@ -74,7 +74,7 @@ function initDatabase() {
         name: 'Prime Video',
         email: 'pedrodiaz3424@gmail.com',
         password: 'ivises72',
-        end_date: '10-08-2026',
+        end_date: '09-09-2026',
         image_url: '/img/prime.png'
       },
       {
@@ -95,21 +95,21 @@ function initDatabase() {
         name: 'Paramount+',
         email: 'pedrodiaz3424@gmail.com',
         password: 'ivises72',
-        end_date: '10-08-2026',
+        end_date: '17-08-2026',
         image_url: '/img/paramount.png'
       },
       {
         name: 'Crunchyroll',
         email: 'pedrodiaz3424@gmail.com',
         password: 'ivises72',
-        end_date: '10-08-2026',
+        end_date: '17-08-2026',
         image_url: '/img/crunchyroll.png'
       },
       {
         name: 'Netflix',
         email: 'pedrodiaz3424@gmail.com',
         password: 'Sitkaes3105',
-        end_date: '11-08-2026',
+        end_date: '03-09-2026',
         image_url: '/img/netflix.png'
       }
     ];
