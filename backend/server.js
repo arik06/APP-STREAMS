@@ -79,9 +79,9 @@ function initDatabase() {
       },
       {
         name: 'Disney+',
-        email: 'sin activar aun',
-        password: 'sin activar aun',
-        end_date: 'no pagado',
+        email: 'pedrodiaz3424@gmail.com',
+        password: 'Sitkaes3105',
+        end_date: '21/08/2026',
         image_url: '/img/disney.png'
       },
       {
