@@ -7,44 +7,44 @@ module.exports = {
   services: [
     {
       name: 'Prime Video',
-      email: 'tu-email-real-prime@gmail.com',        // ← REEMPLAZA AQUÍ
-      password: 'tu-contraseña-real-prime',         // ← REEMPLAZA AQUÍ
-      end_date: '2024-12-31',
+      email: 'pedrodiaz3424@gmail.com',
+      password: 'ivises72',
+      end_date: '09-09-2026',
       image_url: '/img/prime.png'
     },
     {
       name: 'Disney+',
-      email: 'tu-email-real-disney@gmail.com',      // ← REEMPLAZA AQUÍ
-      password: 'tu-contraseña-real-disney',       // ← REEMPLAZA AQUÍ
-      end_date: '2024-12-31',
+      email: 'pedrodiaz3424@gmail.com',
+      password: 'Sitkaes3105',
+      end_date: '21-08-2026',
       image_url: '/img/disney.png'
     },
     {
       name: 'HBO Max',
-      email: 'tu-email-real-hbo@gmail.com',         // ← REEMPLAZA AQUÍ
-      password: 'tu-contraseña-real-hbo',          // ← REEMPLAZA AQUÍ
-      end_date: '2024-12-31',
+      email: 'pedrodiaz3424@gmail.com',
+      password: 'Sitkaes3105',
+      end_date: '10-08-2026',
       image_url: '/img/hbo.png'
     },
     {
       name: 'Paramount+',
-      email: 'tu-email-real-paramount@gmail.com',   // ← REEMPLAZA AQUÍ
-      password: 'tu-contraseña-real-paramount',    // ← REEMPLAZA AQUÍ
-      end_date: '2024-12-31',
+      email: 'pedrodiaz3424@gmail.com',
+      password: 'ivises72',
+      end_date: '17-08-2026',
       image_url: '/img/paramount.png'
     },
     {
       name: 'Crunchyroll',
-      email: 'tu-email-real-crunchyroll@gmail.com', // ← REEMPLAZA AQUÍ
-      password: 'tu-contraseña-real-crunchyroll',  // ← REEMPLAZA AQUÍ
-      end_date: '2024-12-31',
+      email: 'pedrodiaz3424@gmail.com',
+      password: 'ivises72',
+      end_date: '17-08-2026',
       image_url: '/img/crunchyroll.png'
     },
     {
       name: 'Netflix',
-      email: 'tu-email-real-netflix@gmail.com',     // ← REEMPLAZA AQUÍ
-      password: 'tu-contraseña-real-netflix',      // ← REEMPLAZA AQUÍ
-      end_date: '2024-12-31',
+      email: 'pedrodiaz3424@gmail.com',
+      password: 'Sitkaes3105',
+      end_date: '03-09-2026',
       image_url: '/img/netflix.png'
     }
   ]
@@ -52,9 +52,9 @@ module.exports = {
 
 // 📝 INSTRUCCIONES DE USO:
 //
-// 1. Reemplaza todos los 'tu-email-real-XXXXX@gmail.com' con tus emails reales
-// 2. Reemplaza todos los 'tu-contraseña-real-XXXXX' con tus contraseñas reales
-// 3. Actualiza las fechas de expiración si es necesario
+// 1. Reemplaza todos los emails con tus emails reales
+// 2. Reemplaza todas las contraseñas con tus contraseñas reales
+// 3. Las fechas ya están configuradas correctamente en formato DD-MM-YYYY
 // 4. Guarda el archivo
 // 5. Reinicia el servidor para que se apliquen los cambios
 //

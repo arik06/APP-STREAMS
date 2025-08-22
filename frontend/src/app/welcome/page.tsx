@@ -280,11 +280,11 @@ export default function WelcomePage() {
               className="bg-white/10 backdrop-blur-sm rounded-lg shadow-lg hover:shadow-xl transition-all cursor-pointer p-6 border border-white/20 hover:bg-white/20"
             >
               <div className="flex items-center space-x-4">
-                <div className="w-16 h-16 bg-white/20 rounded-lg flex items-center justify-center">
+                <div className="w-16 h-16 bg-white/20 rounded-lg flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:bg-white/30 service-logo-container">
                   <img
                     src={service.image_url}
                     alt={service.name}
-                    className="w-12 h-12 object-contain"
+                    className="w-12 h-12 object-contain service-logo"
                     onError={(e) => {
                       e.currentTarget.style.display = 'none';
                     }}
@@ -308,11 +308,11 @@ export default function WelcomePage() {
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg max-w-md w-full p-6 shadow-2xl">
             <div className="flex items-center space-x-4 mb-6">
-              <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center">
+              <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center shadow-lg service-logo-container">
                 <img
                   src={selectedService.image_url}
                   alt={selectedService.name}
-                  className="w-12 h-12 object-contain"
+                  className="w-12 h-12 object-contain service-logo"
                 />
               </div>
               <div>

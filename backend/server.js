@@ -3,6 +3,7 @@ const sqlite3 = require('sqlite3').verbose();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
+const configServices = require('./config-services');
 
 require('dotenv').config();
 
@@ -69,50 +70,8 @@ function initDatabase() {
 
       // Función para mantener exactamente 6 servicios únicos
   function ensureUniqueServices() {
-    const services = [
-      {
-        name: 'Prime Video',
-        email: 'pedrodiaz3424@gmail.com',
-        password: 'ivises72',
-        end_date: '09-09-2026',
-        image_url: '/img/prime.png'
-      },
-      {
-        name: 'Disney+',
-        email: 'pedrodiaz3424@gmail.com',
-        password: 'Sitkaes3105',
-        end_date: '21/08/2026',
-        image_url: '/img/disney.png'
-      },
-      {
-        name: 'HBO Max',
-        email: 'pedrodiaz3424@gmail.com',
-        password: 'Sitkaes3105',
-        end_date: '10-08-2026',
-        image_url: '/img/hbo.png'
-      },
-      {
-        name: 'Paramount+',
-        email: 'pedrodiaz3424@gmail.com',
-        password: 'ivises72',
-        end_date: '17-08-2026',
-        image_url: '/img/paramount.png'
-      },
-      {
-        name: 'Crunchyroll',
-        email: 'pedrodiaz3424@gmail.com',
-        password: 'ivises72',
-        end_date: '17-08-2026',
-        image_url: '/img/crunchyroll.png'
-      },
-      {
-        name: 'Netflix',
-        email: 'pedrodiaz3424@gmail.com',
-        password: 'Sitkaes3105',
-        end_date: '03-09-2026',
-        image_url: '/img/netflix.png'
-      }
-    ];
+    // Usar la configuración del archivo config-services.js
+    const services = configServices.services;
 
       // 1. Eliminar TODOS los servicios existentes
       db.run('DELETE FROM services', function(err) {
@@ -123,7 +82,7 @@ function initDatabase() {
         
         console.log(`Servicios existentes eliminados: ${this.changes}`);
         
-        // 2. Insertar exactamente 5 servicios únicos
+        // 2. Insertar exactamente 6 servicios únicos
         const insertService = db.prepare('INSERT INTO services (name, email, password, end_date, image_url) VALUES (?, ?, ?, ?, ?)');
         
         let insertedCount = 0;

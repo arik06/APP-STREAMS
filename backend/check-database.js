@@ -44,6 +44,11 @@ function checkDatabase() {
           console.log(`\n   🎬 ${name} (${serviceList.length} instancias):`);
           serviceList.forEach(service => {
             console.log(`      ID: ${service.id}, Email: ${service.email}, Expira: ${service.end_date}`);
+            
+            // Verificar formato de fecha
+            if (service.end_date && service.end_date.includes('/')) {
+              console.log(`      ⚠️  FORMATO DE FECHA INCORRECTO: ${service.end_date} (debería ser DD-MM-YYYY)`);
+            }
           });
           
           if (serviceList.length > 1) {
@@ -58,9 +63,24 @@ function checkDatabase() {
           console.log(`   Servicios con duplicados: ${duplicates.length}`);
           const totalDuplicates = duplicates.reduce((sum, group) => sum + group.length - 1, 0);
           console.log(`   Total de entradas duplicadas: ${totalDuplicates}`);
-          console.log(`\n💡 SOLUCIÓN: Usa el botón "Limpiar Duplicados" en la interfaz web`);
         } else {
           console.log(`\n✅ No se detectaron duplicados`);
+        }
+        
+        // Verificar formato de fechas
+        const incorrectDates = services.filter(service => 
+          service.end_date && service.end_date.includes('/')
+        );
+        
+        if (incorrectDates.length > 0) {
+          console.log(`\n⚠️  FORMATO DE FECHAS INCORRECTO:`);
+          console.log(`   Servicios con formato incorrecto: ${incorrectDates.length}`);
+          incorrectDates.forEach(service => {
+            console.log(`      ${service.name}: ${service.end_date} (debería ser DD-MM-YYYY)`);
+          });
+          console.log(`\n💡 SOLUCIÓN: Reinicia el servidor para que se recree la base de datos`);
+        } else {
+          console.log(`\n✅ Todas las fechas tienen el formato correcto DD-MM-YYYY`);
         }
       }
       
