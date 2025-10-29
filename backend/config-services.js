@@ -46,6 +46,13 @@ module.exports = {
       password: 'Sitkaes3105',
       end_date: '03-09-2026',
       image_url: '/img/netflix.png'
+    },
+    {
+      name: 'NBA League Pass',
+      email: 'pepeortiz1125@hotmail.com',
+      password: 'Jodape1125',
+      end_date: '01-10-2026',
+      image_url: '/img/NBA-League-Pass.png'
     }
   ]
 };
