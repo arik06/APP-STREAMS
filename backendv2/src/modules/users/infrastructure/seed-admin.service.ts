@@ -9,9 +9,9 @@ export class SeedAdminService implements OnModuleInit {
   async onModuleInit() {
     const hash = await bcrypt.hash('admin123', 10);
     await this.prisma.user.upsert({
-      where: { username: 'pepe' },
+      where: { username: 'PEPE' },
       update: { password: hash, role: 'admin' },
-      create: { username: 'pepe', password: hash, role: 'admin' },
+      create: { username: 'PEPE', password: hash, role: 'admin' },
     });
   }
 }

@@ -7,12 +7,12 @@ async function main() {
 
   const hash = await bcrypt.hash('admin123', 10);
   await prisma.user.upsert({
-    where: { username: 'pepe' },
+    where: { username: 'PEPE' },
     update: { password: hash, role: 'admin' },
-    create: { username: 'pepe', password: hash, role: 'admin' },
+    create: { username: 'PEPE', password: hash, role: 'admin' },
   });
 
   await prisma.$disconnect();
 }
 
-main().catch(console.error);
+main().catch(() => {});
