@@ -1,8 +1,13 @@
 import { apiFetch } from '@/shared/api/base';
+import { API_URL } from '@/shared/config';
 import type { Service, ServiceDetail, UpdateServiceDto } from '@/entities/service/model/service.types';
 
 function normalizeImageUrl(url: string): string {
-  return url.replace('/images/', '/img/');
+  const cleaned = url.replace('/images/', '/img/');
+  if (cleaned.startsWith('/uploads/')) {
+    return `${API_URL}${cleaned}`;
+  }
+  return cleaned;
 }
 
 export async function getServices(): Promise<Service[]> {
