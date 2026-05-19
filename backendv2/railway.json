@@ -5,7 +5,7 @@
     "buildCommand": "pnpm install && npx prisma generate && pnpm run build"
   },
   "deploy": {
-    "startCommand": "npx prisma db push --accept-data-loss && node dist/main",
+    "startCommand": "npx prisma db push --accept-data-loss && node prisma/seed-railway.js && node dist/main",
     "healthcheckPath": "/api/health",
     "healthcheckTimeout": 100,
     "restartPolicyType": "ON_FAILURE",
