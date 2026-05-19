@@ -13,9 +13,8 @@ async function bootstrap() {
     mkdirSync(uploadsDir, { recursive: true });
   }
 
-  const isProduction = process.env.NODE_ENV === 'production';
   app.enableCors({
-    origin: isProduction ? process.env.CORS_ORIGIN || false : true,
+    origin: process.env.CORS_ORIGIN || true,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'Accept'],
