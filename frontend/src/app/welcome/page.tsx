@@ -11,22 +11,32 @@ import { InactivityTimer } from '@/features/inactivity-timer/ui/InactivityTimer'
 
 export default function WelcomePage() {
   const router = useRouter();
-  const { handleLogout } = useAuth();
+  const { handleLogout, validateSession } = useAuth();
   const { services, selectedService, showModal, isLoading, fetchServices, handleServiceClick, closeModal } = useServices();
   const [isAdmin, setIsAdmin] = useState(false);
+  const [username, setUsername] = useState('Usuario');
 
   useEffect(() => {
-    const username = localStorage.getItem('username');
-    if (!username) {
-      router.push('/');
-      return;
-    }
-    const role = localStorage.getItem('role');
-    if (role === 'admin') setIsAdmin(true);
-    fetchServices();
-  }, [router, fetchServices]);
+    let cancelled = false;
 
-  const username = typeof window !== 'undefined' ? localStorage.getItem('username') || 'Usuario' : 'Usuario';
+    (async () => {
+      const valid = await validateSession();
+      if (cancelled) return;
+      if (!valid) {
+        router.push('/');
+        return;
+      }
+      const storedUsername = localStorage.getItem('username') || 'Usuario';
+      const role = localStorage.getItem('role');
+      setUsername(storedUsername);
+      if (role === 'admin') setIsAdmin(true);
+      fetchServices();
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [router, fetchServices, validateSession]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-500 to-purple-600">

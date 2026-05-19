@@ -9,6 +9,14 @@ export function login(dto: LoginDto): Promise<LoginResponse> {
   });
 }
 
+export function getMe(): Promise<LoginResponse> {
+  return apiFetch<LoginResponse>('/api/auth/me');
+}
+
+export function logout(): Promise<{ ok: boolean }> {
+  return apiFetch<{ ok: boolean }>('/api/auth/logout', { method: 'POST' });
+}
+
 export function getUsers(): Promise<User[]> {
   return apiFetch<User[]>('/api/admin/users');
 }

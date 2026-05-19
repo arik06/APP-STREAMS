@@ -1,6 +1,16 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { login } from '@/entities/user/api/user.api';
+import { getMe, login, logout } from '@/entities/user/api/user.api';
+
+function persistSession(username: string, role: string) {
+  localStorage.setItem('username', username);
+  localStorage.setItem('role', role);
+}
+
+function clearSession() {
+  localStorage.removeItem('username');
+  localStorage.removeItem('role');
+}
 
 export function useAuth() {
   const [isLoading, setIsLoading] = useState(false);
@@ -13,8 +23,7 @@ export function useAuth() {
 
     try {
       const data = await login({ username, password });
-      localStorage.setItem('username', data.username);
-      if (data.role) localStorage.setItem('role', data.role);
+      persistSession(data.username, data.role);
       router.push('/welcome');
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Error desconocido');
@@ -23,11 +32,26 @@ export function useAuth() {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('username');
-    localStorage.removeItem('role');
+  const validateSession = useCallback(async (): Promise<boolean> => {
+    try {
+      const data = await getMe();
+      persistSession(data.username, data.role);
+      return true;
+    } catch {
+      clearSession();
+      return false;
+    }
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch {
+      /* cookie puede no existir */
+    }
+    clearSession();
     router.push('/');
   };
 
-  return { isLoading, error, handleLogin, handleLogout };
+  return { isLoading, error, handleLogin, handleLogout, validateSession };
 }
