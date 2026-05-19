@@ -13,8 +13,9 @@ async function bootstrap() {
     mkdirSync(uploadsDir, { recursive: true });
   }
 
+  const isProduction = process.env.NODE_ENV === 'production';
   app.enableCors({
-    origin: true,
+    origin: isProduction ? process.env.CORS_ORIGIN || false : true,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'Accept'],
@@ -32,6 +33,5 @@ async function bootstrap() {
 
   const port = process.env.PORT || 8080;
   await app.listen(port);
-  console.log(`Servidor corriendo en puerto ${port}`);
 }
 bootstrap();
