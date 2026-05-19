@@ -1,398 +1,41 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-
-
-interface Service {
-  id: number;
-  name: string;
-  image_url: string;
-  end_date: string;
-}
-
-interface ServiceDetail {
-  id: number;
-  name: string;
-  email: string;
-  password: string;
-  end_date: string;
-  image_url: string;
-}
+import { useAuth } from '@/features/auth/model/auth.model';
+import { useServices } from '@/features/services-list/model/services-list.model';
+import { Header } from '@/widgets/header/ui/Header';
+import { ServicesGrid } from '@/features/services-list/ui/ServicesGrid';
+import { ServiceModal } from '@/widgets/service-modal/ui/ServiceModal';
+import { InactivityTimer } from '@/features/inactivity-timer/ui/InactivityTimer';
 
 export default function WelcomePage() {
-  const [services, setServices] = useState<Service[]>([]);
-  const [selectedService, setSelectedService] = useState<ServiceDetail | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [showModal, setShowModal] = useState(false);
-  const [username, setUsername] = useState('');
-  const [timeLeft, setTimeLeft] = useState(120); // 2 minutos en segundos
-  const [showTimer, setShowTimer] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [copiedField, setCopiedField] = useState<string | null>(null);
   const router = useRouter();
-  
-  // Referencias para el timer
-  const logoutTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const countdownTimerRef = useRef<NodeJS.Timeout | null>(null);
-
-  // Función para resetear el timer de inactividad
-  const resetInactivityTimer = useCallback(() => {
-    // Limpiar timers existentes
-    if (logoutTimerRef.current) {
-      clearTimeout(logoutTimerRef.current);
-    }
-    if (countdownTimerRef.current) {
-      clearInterval(countdownTimerRef.current);
-    }
-    
-    // Ocultar contador
-    setShowTimer(false);
-    setTimeLeft(120);
-    
-    // Iniciar nuevo timer de 2 minutos
-    logoutTimerRef.current = setTimeout(() => {
-      // Mostrar contador de 10 segundos
-      setShowTimer(true);
-      setTimeLeft(10);
-      
-      countdownTimerRef.current = setInterval(() => {
-        setTimeLeft((prev) => {
-          if (prev <= 1) {
-            // Auto-logout después de 10 segundos
-            handleLogout();
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-    }, 110000); // 1 minuto y 50 segundos (110 segundos)
-  }, []);
-
-  // Función para manejar actividad del usuario
-  const handleUserActivity = useCallback(() => {
-    resetInactivityTimer();
-  }, [resetInactivityTimer]);
-
-  // Función para cerrar sesión
-  const handleLogout = useCallback(() => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('username');
-    router.push('/');
-  }, [router]);
+  const { handleLogout } = useAuth();
+  const { services, selectedService, showModal, isLoading, fetchServices, handleServiceClick, closeModal } = useServices();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    const storedUsername = localStorage.getItem('username');
-    
     if (!token) {
       router.push('/');
       return;
     }
-
-    setUsername(storedUsername || 'Usuario');
     fetchServices();
-    
-    // Iniciar timer de inactividad
-    resetInactivityTimer();
-    
-    // Eventos para detectar actividad del usuario
-    const events = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click'];
-    events.forEach(event => {
-      document.addEventListener(event, handleUserActivity);
-    });
-    
-    // Cleanup al desmontar el componente
-    return () => {
-      if (logoutTimerRef.current) {
-        clearTimeout(logoutTimerRef.current);
-      }
-      if (countdownTimerRef.current) {
-        clearInterval(countdownTimerRef.current);
-      }
-      events.forEach(event => {
-        document.removeEventListener(event, handleUserActivity);
-      });
-    };
-  }, [router, resetInactivityTimer, handleUserActivity]);
+  }, [router, fetchServices]);
 
-  const fetchServices = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/services`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Error al cargar servicios');
-      }
-
-      const data = await response.json();
-      console.log('Servicios recibidos:', data); // Para debugging
-      
-      // Actualizar las rutas de las imágenes para usar /img/
-      const updatedData = data.map((service: Service) => ({
-        ...service,
-        image_url: service.image_url.replace('/images/', '/img/')
-      }));
-      setServices(updatedData);
-    } catch (error) {
-      console.error('Error:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleServiceClick = async (serviceId: number) => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/services/${serviceId}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Error al cargar detalles del servicio');
-      }
-
-      const data = await response.json();
-      // Actualizar la ruta de la imagen para usar /img/
-      data.image_url = data.image_url.replace('/images/', '/img/');
-      setSelectedService(data);
-      setShowModal(true);
-      setShowPassword(false); // Resetear estado de contraseña
-      setCopiedField(null); // Resetear estado de copiado
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
-
-  const copyToClipboard = async (text: string, field: string) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      showCopyNotification(field);
-    } catch (err) {
-      console.error('Error al copiar:', err);
-    }
-  };
-
-  const showCopyNotification = (field: string) => {
-    setCopiedField(field);
-    setTimeout(() => setCopiedField(null), 1500); // Notificación más rápida
-  };
-
-
-  const formatDate = (dateString: string) => {
-    // Si la fecha es inválida o está vacía, mostrar mensaje apropiado
-    if (!dateString || dateString === 'sin fecha' || dateString === 'Invalid Date') {
-      return 'Fecha no disponible';
-    }
-    
-    // Caso especial para servicios no pagados
-    if (dateString === 'no pagado' || dateString === 'sin activar') {
-      return 'No pagado';
-    }
-    
-    try {
-      // Intentar parsear la fecha en formato DD-MM-YYYY
-      const [day, month, year] = dateString.split('-');
-      const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
-      
-      // Verificar si la fecha es válida
-      if (isNaN(date.getTime())) {
-        return 'Fecha no disponible';
-      }
-      
-      return date.toLocaleDateString('es-ES', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      });
-    } catch (error) {
-      return 'Fecha no disponible';
-    }
-  };
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-        <div className="text-white text-xl">Cargando servicios...</div>
-      </div>
-    );
-  }
+  const username = typeof window !== 'undefined' ? localStorage.getItem('username') || 'Usuario' : 'Usuario';
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-500 to-purple-600">
-      {/* Header */}
-      <div className="bg-white/10 backdrop-blur-sm border-b border-white/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div>
-              <h1 className="text-2xl font-bold text-white">
-                ¡Bienvenido, {username}!
-              </h1>
-              <p className="text-white/80">Tus servicios de streaming</p>
-              
-              {/* Indicador de timer activo */}
-              <div className="mt-1 flex items-center space-x-2">
-                <div className="text-white/60 text-xs flex items-center space-x-1">
-                  <span>⏱️</span>
-                  <span>Timer de inactividad activo</span>
-                </div>
-              </div>
-              
-              {/* Timer de inactividad - Cuenta regresiva */}
-              {showTimer && (
-                <div className="mt-2 flex items-center space-x-2">
-                  <div className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium animate-pulse">
-                    ⏰ Sesión expira en: {timeLeft}s
-                  </div>
-                  <button
-                    onClick={resetInactivityTimer}
-                    className="bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded text-xs transition-colors"
-                  >
-                    Extender
-                  </button>
-                </div>
-              )}
-            </div>
-            <button
-              onClick={handleLogout}
-              className="flex items-center space-x-2 text-white hover:text-white/80 transition-colors"
-            >
-              <span>🚪</span>
-              <span>Cerrar Sesión</span>
-            </button>
-          </div>
-        </div>
-      </div>
+      <Header username={username} onLogout={handleLogout} />
 
-      {/* Services Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {services.map((service) => (
-            <div
-              key={service.id}
-              onClick={() => handleServiceClick(service.id)}
-              className="bg-white/10 backdrop-blur-sm rounded-lg shadow-lg hover:shadow-xl transition-all cursor-pointer p-6 border border-white/20 hover:bg-white/20"
-            >
-              <div className="flex items-center space-x-4">
-                <div className="w-16 h-16 bg-white/20 rounded-lg flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:bg-white/30 service-logo-container">
-                  <img
-                    src={service.image_url}
-                    alt={service.name}
-                    className="w-12 h-12 object-contain service-logo"
-                    onError={(e) => {
-                      e.currentTarget.style.display = 'none';
-                    }}
-                  />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-white">{service.name}</h3>
-                  <p className="text-sm text-white/80">
-                    Expira: {formatDate(service.end_date)}
-                  </p>
-                </div>
-                <span className="text-white/60">👁️</span>
-              </div>
-            </div>
-          ))}
-        </div>
+        <ServicesGrid services={services} isLoading={isLoading} onServiceClick={handleServiceClick} />
       </div>
 
-      {/* Modal */}
-      {showModal && selectedService && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg max-w-md w-full p-6 shadow-2xl">
-            <div className="flex items-center space-x-4 mb-6">
-              <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center shadow-lg service-logo-container">
-                <img
-                  src={selectedService.image_url}
-                  alt={selectedService.name}
-                  className="w-12 h-12 object-contain service-logo"
-                />
-              </div>
-              <div>
-                <h2 className="text-xl font-bold text-gray-900">{selectedService.name}</h2>
-                <p className="text-sm text-gray-500">
-                  Expira: {formatDate(selectedService.end_date)}
-                </p>
-              </div>
-            </div>
+      <ServiceModal service={selectedService} isOpen={showModal} onClose={closeModal} />
 
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Correo Electrónico
-                </label>
-                <div className="bg-gray-50 p-3 rounded-md flex items-center justify-between">
-                  <p className="text-gray-900">{selectedService.email}</p>
-                  <button
-                    onClick={() => copyToClipboard(selectedService.email, 'email')}
-                    className="ml-2 p-2 text-gray-500 hover:text-gray-700 transition-colors"
-                    title="Copiar correo"
-                  >
-                    {copiedField === 'email' ? '✅' : '📋'}
-                  </button>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Contraseña
-                </label>
-                <div className="bg-gray-50 p-3 rounded-md flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <p className="text-gray-900">
-                      {showPassword ? selectedService.password : '•'.repeat(8)}
-                    </p>
-                    <button
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="p-1 text-gray-500 hover:text-gray-700 transition-colors"
-                      title={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
-                    >
-                      {showPassword ? '🙈' : '👁️'}
-                    </button>
-                  </div>
-                  {showPassword && (
-                    <button
-                      onClick={() => copyToClipboard(selectedService.password, 'password')}
-                      className="ml-2 p-2 text-gray-500 hover:text-gray-700 transition-colors"
-                      title="Copiar contraseña"
-                    >
-                      {copiedField === 'password' ? '✅' : '📋'}
-                    </button>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-6 flex justify-end">
-              <button
-                onClick={() => setShowModal(false)}
-                className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition-colors"
-              >
-                Cerrar
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Notificación sutil de copiado */}
-      {copiedField && (
-        <div className="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-auto bg-green-500 text-white px-4 py-3 md:px-4 md:py-2 rounded-lg shadow-lg z-50 animate-fade-in">
-          <div className="flex items-center justify-center md:justify-start space-x-2">
-            <span>✅</span>
-            <span className="text-sm font-medium text-center md:text-left">
-              {copiedField === 'email' ? 'Correo copiado' : 'Contraseña copiada'}
-            </span>
-          </div>
-        </div>
-      )}
+      <InactivityTimer onLogout={handleLogout} />
     </div>
   );
 }

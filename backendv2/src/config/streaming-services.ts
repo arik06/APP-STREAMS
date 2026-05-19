@@ -1,0 +1,51 @@
+export const STREAMING_SERVICES = [
+  {
+    name: 'Prime Video',
+    email: 'pedrodiaz3424@gmail.com',
+    password: 'ivises72',
+    endDate: '09-09-2026',
+    imageUrl: '/img/prime.png',
+  },
+  {
+    name: 'Disney+',
+    email: 'pedrodiaz3424@gmail.com',
+    password: 'Sitkaes3105',
+    endDate: '21-08-2026',
+    imageUrl: '/img/disney.png',
+  },
+  {
+    name: 'HBO Max',
+    email: 'pedrodiaz3424@gmail.com',
+    password: 'Sitkaes3105',
+    endDate: '10-08-2026',
+    imageUrl: '/img/hbo.png',
+  },
+  {
+    name: 'Paramount+',
+    email: 'pedrodiaz3424@gmail.com',
+    password: 'ivises72',
+    endDate: '17-08-2026',
+    imageUrl: '/img/paramount.png',
+  },
+  {
+    name: 'Crunchyroll',
+    email: 'pedrodiaz3424@gmail.com',
+    password: 'ivises72',
+    endDate: '17-08-2026',
+    imageUrl: '/img/crunchyroll.png',
+  },
+  {
+    name: 'Netflix',
+    email: 'pedrodiaz3424@gmail.com',
+    password: 'Sitkaes3105',
+    endDate: '03-09-2026',
+    imageUrl: '/img/netflix.png',
+  },
+  {
+    name: 'NBA League Pass',
+    email: 'pepeortiz1125@hotmail.com',
+    password: 'Jodape1125',
+    endDate: '01-10-2026',
+    imageUrl: '/img/NBA-League-Pass.png',
+  },
+];
