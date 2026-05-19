@@ -14,4 +14,5 @@ export interface UpdateServiceDto {
   email?: string;
   password?: string;
   endDate?: string;
+  imageUrl?: string;
 }

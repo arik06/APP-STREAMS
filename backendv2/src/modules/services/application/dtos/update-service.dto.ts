@@ -12,4 +12,8 @@ export class UpdateServiceDto {
   @IsString()
   @IsOptional()
   endDate?: string;
+
+  @IsString()
+  @IsOptional()
+  imageUrl?: string;
 }

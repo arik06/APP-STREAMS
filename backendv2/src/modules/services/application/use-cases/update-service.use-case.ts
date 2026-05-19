@@ -12,10 +12,11 @@ export class UpdateServiceUseCase {
       throw new NotFoundException('Servicio no encontrado');
     }
 
-    const data: { email?: string; password?: string; endDate?: string } = {};
+    const data: { email?: string; password?: string; endDate?: string; imageUrl?: string } = {};
     if (dto.email) data.email = dto.email;
     if (dto.password) data.password = dto.password;
     if (dto.endDate) data.endDate = dto.endDate;
+    if (dto.imageUrl) data.imageUrl = dto.imageUrl;
 
     const updated = await this.serviceRepository.update(id, data);
     return {
