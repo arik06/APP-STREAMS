@@ -7,9 +7,9 @@ export class SeedAdminService implements OnModuleInit {
   constructor(private readonly prisma: PrismaService) {}
 
   async onModuleInit() {
-    const count = await this.prisma.user.count();
-    if (count > 0) {
-      console.log(`Usuarios existentes: ${count}. Seed de admin omitido.`);
+    const existing = await this.prisma.user.findUnique({ where: { username: 'pepe' } });
+    if (existing) {
+      console.log('Usuario admin "pepe" ya existe. Seed omitido.');
       return;
     }
 
