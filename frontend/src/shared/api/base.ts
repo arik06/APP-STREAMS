@@ -1,21 +1,19 @@
-import { API_URL } from '@/shared/config';
-
 export async function apiFetch<T>(
   endpoint: string,
   options?: RequestInit,
 ): Promise<T> {
-  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-
-  const headers: HeadersInit = {
-    'Content-Type': 'application/json',
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    ...options?.headers,
-  };
-
-  const response = await fetch(`${API_URL}${endpoint}`, {
+  const response = await fetch(endpoint, {
+    credentials: 'include',
     ...options,
-    headers,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options?.headers,
+    },
   });
+
+  if (response.status === 204) {
+    return undefined as T;
+  }
 
   const data = await response.json();
 

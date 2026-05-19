@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { AdminSidebar } from '@/widgets/admin-sidebar/ui/AdminSidebar';
-import { decodeJwt } from '@/shared/lib/jwt';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -11,14 +10,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
+    const role = localStorage.getItem('role');
+    if (role !== 'admin') {
       router.push('/');
-      return;
-    }
-    const payload = decodeJwt(token);
-    if (!payload || payload.role !== 'admin') {
-      router.push('/welcome');
       return;
     }
     setIsAdmin(true);

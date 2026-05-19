@@ -13,8 +13,8 @@ export function useAuth() {
 
     try {
       const data = await login({ username, password });
-      localStorage.setItem('token', data.token);
       localStorage.setItem('username', data.username);
+      if (data.role) localStorage.setItem('role', data.role);
       router.push('/welcome');
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Error desconocido');
@@ -24,8 +24,8 @@ export function useAuth() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
     localStorage.removeItem('username');
+    localStorage.removeItem('role');
     router.push('/');
   };
 

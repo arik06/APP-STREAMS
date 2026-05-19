@@ -8,7 +8,6 @@ import { Header } from '@/widgets/header/ui/Header';
 import { ServicesGrid } from '@/features/services-list/ui/ServicesGrid';
 import { ServiceModal } from '@/widgets/service-modal/ui/ServiceModal';
 import { InactivityTimer } from '@/features/inactivity-timer/ui/InactivityTimer';
-import { decodeJwt } from '@/shared/lib/jwt';
 
 export default function WelcomePage() {
   const router = useRouter();
@@ -17,13 +16,13 @@ export default function WelcomePage() {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
+    const username = localStorage.getItem('username');
+    if (!username) {
       router.push('/');
       return;
     }
-    const payload = decodeJwt(token);
-    if (payload?.role === 'admin') setIsAdmin(true);
+    const role = localStorage.getItem('role');
+    if (role === 'admin') setIsAdmin(true);
     fetchServices();
   }, [router, fetchServices]);
 

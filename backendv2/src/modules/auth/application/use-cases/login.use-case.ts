@@ -31,6 +31,6 @@ export class LoginUseCase implements AuthServiceInterface {
     const payload = { sub: user.id, username: user.username, role: user.role };
     const token = this.jwtService.sign(payload, { expiresIn: '24h' });
 
-    return { token, username: user.username };
+    return { token, username: user.username, role: user.role };
   }
 }

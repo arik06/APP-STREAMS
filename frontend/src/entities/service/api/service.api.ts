@@ -55,18 +55,14 @@ export async function updateService(id: number, dto: UpdateServiceDto): Promise<
 }
 
 export async function uploadImage(file: File): Promise<string> {
-  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
   const formData = new FormData();
   formData.append('file', file);
 
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/admin/services/upload`,
-    {
-      method: 'POST',
-      headers: token ? { Authorization: `Bearer ${token}` } : {},
-      body: formData,
-    },
-  );
+  const response = await fetch('/api/admin/services/upload', {
+    method: 'POST',
+    credentials: 'include',
+    body: formData,
+  });
 
   if (!response.ok) {
     const err = await response.json().catch(() => ({}));
