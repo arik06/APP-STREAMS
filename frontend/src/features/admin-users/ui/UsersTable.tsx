@@ -48,11 +48,11 @@ export function UsersTable() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-white">Usuarios</h1>
+      <div className="flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-center mb-6">
+        <h1 className="text-2xl sm:text-3xl font-bold text-white">Usuarios</h1>
         <button
           onClick={() => { setShowForm(true); setEditingUser(null); setForm({ username: '', password: '' }); }}
-          className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors"
+          className="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors"
         >
           + Nuevo Usuario
         </button>
@@ -78,7 +78,7 @@ export function UsersTable() {
               onChange={(e) => setForm({ ...form, password: e.target.value })}
               className="w-full px-3 py-2 rounded-md border border-white/20 bg-white/10 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            <div className="flex space-x-3">
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
               <button
                 onClick={editingUser ? handleUpdate : handleCreate}
                 className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
@@ -96,8 +96,8 @@ export function UsersTable() {
         </div>
       )}
 
-      <div className="bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 overflow-hidden">
-        <table className="w-full text-white">
+      <div className="hidden md:block bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 overflow-x-auto">
+        <table className="w-full text-white min-w-[640px]">
           <thead>
             <tr className="border-b border-white/20 text-left">
               <th className="p-4 font-medium text-white/70">ID</th>
@@ -140,6 +140,54 @@ export function UsersTable() {
             ))}
           </tbody>
         </table>
+      </div>
+
+      <div className="md:hidden space-y-3">
+        {users.map((user) => (
+          <div
+            key={user.id}
+            className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20"
+          >
+            <div className="flex items-start justify-between gap-2 mb-3">
+              <div className="min-w-0">
+                <p className="text-white font-semibold truncate">{user.username}</p>
+                <p className="text-white/50 text-sm">ID {user.id}</p>
+              </div>
+              <span
+                className={`shrink-0 px-2 py-1 rounded text-xs ${
+                  user.role === 'admin'
+                    ? 'bg-purple-500/30 text-purple-300'
+                    : 'bg-blue-500/30 text-blue-300'
+                }`}
+              >
+                {user.role}
+              </span>
+            </div>
+            <p className="text-white/60 text-sm mb-3">
+              Creado: {new Date(user.createdAt).toLocaleDateString()}
+            </p>
+            <div className="flex flex-col gap-2">
+              <button
+                onClick={() => {
+                  setEditingUser(user);
+                  setForm({ username: user.username, password: '' });
+                  setShowForm(false);
+                }}
+                className="w-full bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-2 rounded text-sm transition-colors"
+              >
+                Editar
+              </button>
+              {user.role !== 'admin' && (
+                <button
+                  onClick={() => handleDelete(user.id)}
+                  className="w-full bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded text-sm transition-colors"
+                >
+                  Eliminar
+                </button>
+              )}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

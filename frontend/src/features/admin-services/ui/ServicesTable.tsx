@@ -77,11 +77,11 @@ export function ServicesTable() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-white">Servicios de Streaming</h1>
+      <div className="flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-center mb-6">
+        <h1 className="text-2xl sm:text-3xl font-bold text-white">Servicios de Streaming</h1>
         <button
           onClick={() => { setShowCreate(true); setEditingService(null); resetCreateForm(); }}
-          className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors"
+          className="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors"
         >
           + Nuevo Servicio
         </button>
@@ -139,7 +139,7 @@ export function ServicesTable() {
                 </div>
               )}
             </div>
-            <div className="flex space-x-3">
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
               <button
                 onClick={handleCreate}
                 disabled={uploading}
@@ -208,7 +208,7 @@ export function ServicesTable() {
                 <p className="text-white/40 text-xs mt-1">Deja vacío para mantener la imagen actual</p>
               )}
             </div>
-            <div className="flex space-x-3">
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
               <button
                 onClick={handleSave}
                 disabled={uploading}
@@ -231,9 +231,9 @@ export function ServicesTable() {
         {services.map((service) => (
           <div
             key={service.id}
-            className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 flex items-center justify-between"
+            className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
           >
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center gap-4 min-w-0">
               <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
                 <img
                   src={service.image_url}
@@ -249,7 +249,7 @@ export function ServicesTable() {
             </div>
             <button
               onClick={() => handleEdit(service.id)}
-              className="bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded text-sm transition-colors"
+              className="w-full sm:w-auto bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-2 sm:py-1 rounded text-sm transition-colors"
             >
               Editar
             </button>

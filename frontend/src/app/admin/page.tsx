@@ -16,7 +16,7 @@ export default function AdminDashboard() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-white mb-8">Dashboard</h1>
+      <h1 className="text-2xl sm:text-3xl font-bold text-white mb-6 sm:mb-8">Dashboard</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
           <div className="text-4xl mb-2">🎬</div>

@@ -44,9 +44,9 @@ export default function AdminLayout({
   if (!isAdmin) return null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-500 to-purple-600 flex">
+    <div className="min-h-screen bg-gradient-to-br from-blue-500 to-purple-600 flex flex-col md:flex-row">
       <AdminSidebar />
-      <main className="flex-1 p-8 overflow-auto">
+      <main className="flex-1 p-4 sm:p-6 md:p-8 overflow-auto min-w-0">
         {children}
       </main>
     </div>
